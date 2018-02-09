@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static i18n bootstrap3 %}
+
+{% block css %}
+<link href="{% static 'css/plugins/switchery/switchery.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/picture.css' %}"> 
+<style>
+
+</style>
+{% endblock css %}
+
+
+{% block main %}
+    <div class="col-xs-12 col-sm-3 profile">
+        <div class="ibox float-e-margins">
+            {# FORM TITLE #}
+            <div class="ibox-title">
+                <h2> {% trans "Profile" %}<small> {% trans "please update picture." %}</small></h2>
+                <div class="ibox-tools">
+                    
+                </div>
+            </div>
+            {# FORM CONTENT #}
+            <div class="ibox-content">
+                {# FORM START #}
+                <form method="POST" enctype='multipart/form-data' class="form-horizontal" id="formProfile">
+                    
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <div class="preview">
+                      <div class="upload">
+                        <span class="preview-bg"></span>
+                        <p class="preview-title"> {% trans 'Profile Picture' %} </p>
+                        <img src="{% if user.profile.picture %} {{ user.profile.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" 
+                    style="border-radius: 5px; margin-bottom: 1em;" width="150" id='image_existed'>
+                      </div>
+                    </div>
+                    <input type="submit" class='btn btn-primary' value='Confirm' id="btn-profile" style="display: none;">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-9">
+        {% include 'account/person_policy.html' %}
+    </div>
+
+{% endblock main %}
+
+
+{% block modal %}
+<!-- MODAL TO CROP THE IMAGE -->
+{% include 'account/modal_picturecrop.html' %}
+
+<!-- MODAL FOR THEME ADD & EDIT -->
+<div class="modal fade" id="modal-theme">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<!-- MODAL FOR THEME ADD & EDIT -->
+<div class="modal fade" id="modal-inviteperson">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"> {% trans "Invite Person to This Theme" %}</h4>
+            </div>
+        <form method="post" id="form_inviteperson">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-8 search">
+                    <input type="text" class="form-control" id="id_person">
+                    <div class="results" id="id_person_results">
+                      
+                    </div>
+                  </div>
+                  <div class="col-sm-4 made-input">
+                    <div class="col-sm-6" id="persons_name">
+                        
+                    </div>
+                    <div class="col-sm-2" id="persons_id">
+                        
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                  <button type="submit" class="btn btn-primary">{% trans "Confirm" %}</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+
+
+{% block javascript %}
+<link href="{% static 'css/cropper.min.css' %}" rel="stylesheet">
+<script src="{% static 'js/cropper.min.js' %}"></script>
+<script src="{% static 'js/plugins/switchery/switchery.js' %}"></script>
+{% include 'account/crop.js' %}
+{% include 'account/invite_person.js' %}
+
+<script>
+{% for theme in user.profile.get_theme_list %}
+    var elem1{{forloop.counter}} = document.querySelector('.js-switch1-{{forloop.counter}}');
+    var init1{{forloop.counter}} = new Switchery(elem1{{forloop.counter}}, { color: '#ED5565' });
+{% endfor %}
+
+{% for theme in user.profile.get_invited_theme %}
+    var elem2{{forloop.counter}} = document.querySelector('.js-switch2-{{forloop.counter}}');
+    var init2{{forloop.counter}} = new Switchery(elem2{{forloop.counter}}, { color: '#ED5565' });
+{% endfor %}
+
+
+</script>
+
+{% endblock javascript %}

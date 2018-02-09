@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+.sidebar-map {
+  position: fixed;
+  right: 0;
+}
+.content_list{
+  margin-left: 10px;
+}
+#floating-panel {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 5;
+  background-color: #fff;
+  padding: 1px;
+/*  border: 1px solid #999;*/
+  text-align: center;
+  font-family: 'Roboto','sans-serif';
+  line-height: 15px;
+  padding: 3px;
+}
+#floating-menu {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  z-index: 6;
+  background-color: #fff;
+  padding: 1px;
+/*  border: 1px solid #999;*/
+  text-align: center;
+  font-family: 'Roboto','sans-serif';
+  line-height: 15px;
+  padding: 3px;
+}
+</style>
+{% endblock css %}
+
+{% block main %}
+  <div class="row"> 
+      <div class="col-sm-{% if profile %}6{% else %}4{% endif %} content_list">
+          <div id="post-container" class="photo">
+            {% if profile %}
+              {% include 'account/person_policy.html' with pList=True user=friend %}
+            {% endif %}
+
+            {% if post_list %}
+                {% for post in post_list %}
+                  {% include 'blog/partial/post_detail.html' with pList=True %}
+                {% endfor %}
+            {% else %}
+                <div class="ibox float-e-margins" post-id="{{post.id}}">
+                    <div class="ibox-title">
+                        <h3>No Content</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="text-center">
+                          <p>You don't have a friend or bucket List</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            
+          </div>
+      </div>
+
+    {# Toggle Menu Map or TimeTable : Tag & Position #}
+    {% if tag and pos %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:position_on_map_tag' tag %}">
+            <i class="fa fa-map-marker fa-lg"></i>
+          </button>
+        </div>
+    {% elif pos %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:position_on_map' %}">
+            <i class="fa fa-map-marker fa-lg"></i>
+          </button>
+        </div>
+    {% elif tag %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:post_on_map_tag' tag %}">
+            <i class="fa fa-map-marker fa-lg"></i>
+          </button>
+        </div>
+    {% else %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:post_on_map' %}">
+            <i class="fa fa-map-marker fa-lg"></i>
+          </button>
+        </div>
+    {% endif %}
+
+      <div id="floating-panel">
+        <input type=button value="food" class="maptag" data-url="{% url 'blog:index_tag' 'food' %}"> 
+        <input type=button value="travel" class="maptag" data-url="{% url 'blog:index_tag' 'travel' %}"> 
+      </div>
+      
+      
+  </div>
+{% endblock main %}
+
+
+{% block modal %}
+
+{% endblock modal %}
+
+
+{% block javascript %}
+<script>
+var map;
+var markers = [];
+var bounds;
+var myLng, myLat;
+var map_height;
+
+map_height = $(window).height() - 120;
+$("#map").height(map_height);
+$(".main").height(map_height);
+
+window.addEventListener('resize', function(event) {
+  console.log("Window resize");
+  map_height = $(window).height() - 120;
+  $("#map").height(map_height);
+});
+
+$("#btn_my_location").click(function(evt){
+  evt.preventDefault();
+  if (typeof myLat != 'undefined'){
+    window.location.href = "{% url 'blog:position_on_map' %}?lat=" + myLat + "&lng=" + myLng;
+  } else {
+    alert("Geolocation is blocked by broswer, please check the broswer setting.")
+  }
+});
+
+function initMap() {
+
+  // map = new google.maps.Map(document.getElementById('map'), {
+  //     zoom: 6,
+  //     center: {lat: 36.44, lng: 120.13}
+  // });
+
+  // var infoWindow = new google.maps.InfoWindow({map: map});
+  
+  // bounds = new google.maps.LatLngBounds();
+
+  if (navigator.geolocation){
+
+    navigator.geolocation.getCurrentPosition(function(position){
+
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+        // console.log(myLat, myLng);
+      var tempPos = transform(lat, lng);
+      console.log("Index html" + tempPos);
+      myLat = tempPos[0];
+      myLng = tempPos[1];
+
+      var pos = {
+        lat: myLat,
+        lng: myLng
+      };
+      var marker = new google.maps.Marker({
+        position: pos,
+        label: 'My',
+        map: map
+      });
+
+      markers.push(marker);
+      // bounds.extend(marker.position);
+
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+
+  
+}
+
+function getCircle(color){
+  return {
+    path: "M27.648 -41.399q0 -3.816 -2.7 -6.516t-6.516 -2.7 -6.516 2.7 -2.7 6.516 2.7 6.516 6.516 2.7 6.516 -2.7 2.7 -6.516zm9.216 0q0 3.924 -1.188 6.444l-13.104 27.864q-0.576 1.188 -1.71 1.872t-2.43 0.684 -2.43 -0.684 -1.674 -1.872l-13.14 -27.864q-1.188 -2.52 -1.188 -6.444 0 -7.632 5.4 -13.032t13.032 -5.4 13.032 5.4 5.4 13.032z",
+    scale: 0.6,
+    strokeWeight: 0.2,
+    strokeColor: 'black',
+    strokeOpacity: 1,
+    fillColor: color,
+    fillOpacity: 0.85,
+  }
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+}
+
+$(document).on('click', '.maptag', function(){
+    {% if pos %}
+      window.location.href = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
+    {% else %}
+      window.location.href = $(this).attr('data-url');
+    {% endif %}
+})
+
+$(document).on('click', '#menu_toogle', function(){
+    {% if pos %}
+      window.location.href = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
+    {% else %}
+      window.location.href = $(this).attr('data-url');
+    {% endif %}
+})
+</script>
+
+{% if profile %}
+<link href="{% static 'css/plugins/switchery/switchery.css' %}" rel="stylesheet">
+<script src="{% static 'js/plugins/switchery/switchery.js' %}"></script>
+<script>
+{% for theme in friend.profile.get_theme_list %}
+    var elem = document.querySelector('.js-switch1-{{forloop.counter}}');
+    var init = new Switchery(elem, { color: '#ED5565' });
+{% endfor %}
+
+{% for theme in friend.profile.get_invited_theme %}
+    var elem = document.querySelector('.js-switch2-{{forloop.counter}}');
+    var init = new Switchery(elem, { color: '#ED5565' });
+{% endfor %}
+</script>
+{% endif %}
+
+<script>
+function populateInfoWindow(marker, infoWindow) {
+    if(infoWindow.marker != marker){
+        infoWindow.marker = marker;
+        $.ajax({
+          type: 'GET',
+          async: true,
+          data: {'id': marker.id},
+          url: "{% url 'blog:post_detail' %}",
+          dataType: 'html',
+          success: function(data){
+            infoWindow.setContent(data);
+          }
+        });
+        infoWindow.open(map, marker);
+
+        infoWindow.addListener('closeclick',function() {
+            infoWindow.setMap(null);
+        });
+    }
+}
+
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXY6uFicQrbFZ-ddMHg2eQrFT9BAVqLOo&callback=initMap">
+</script>
+
+{% include 'blog/script.js' %}
+
+{% endblock javascript %}

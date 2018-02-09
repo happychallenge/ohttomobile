@@ -1,0 +1,21 @@
+{% load static i18n bootstrap3 %}
+
+<div class="ibox float-e-margins">
+    {# FORM TITLE #}
+    <div class="ibox-title">
+        <h2> 
+            {{user.profile.nickname}}'s Person Infomation 
+        </h2>
+    </div>
+    {# FORM CONTENT #}
+    <div class="ibox-content forum-container">
+    {# Post #}
+        {% include 'account/partial_posting_history.html' %}
+        
+    {# Friends #}
+        {% include 'account/partial_friends.html' %}
+
+    <!-- My Theme -->
+        {% include 'account/partial_theme_list.html' %}
+    </div>
+</div>

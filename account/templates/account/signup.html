@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% load bootstrap3 staticfiles i18n %}
+
+{% block main %}
+<style>
+.wrapper{
+    width: 500px;
+    height: 400px;
+    position: fixed;
+    margin-left: -250px;
+    margin-top: -200px;
+    top: 50%;
+    left: 50%;
+}
+</style>
+<div class="wrapper">
+    <div class="row">
+        <div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h3>User Signup</h3>
+                </div>
+                <div class="ibox-content">
+                    <h4 class="logo">I Remember Your Past</h4>
+                    <div class="signup">
+                        <form action="{% url 'signup' %}" method="post" role="form" id='signup'>
+                            {% csrf_token %} 
+                            {% bootstrap_form form %}
+                            <button type="submit" class="btn btn-primary">
+                                {% trans 'Create an account' %}
+                            </button>
+                            
+                            <a href="" class="btn btn-primary pull-right">
+                                {% trans 'Home' %}
+                            </a>
+                        </form>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}
+
+
+{% block javascript %}
+  <script>
+    $(function(){
+
+      $("#id_email").focusout(function() {
+          var email = $(this).val();
+
+          $.ajax({
+            url: "/account/checkemail/", 
+            data: {
+                'email': email,
+            },
+            dataType: 'json',
+            success: function(data){
+                if(data.exists) {
+                   $("#id_email").val("{% trans 'This email is already registered.!!' %}");
+                   $("#id_email").focus();
+                } 
+            }
+          });
+          return false;
+      });
+
+      $('.btn-primary').click(function(){
+          var username = $('#id_email').val();
+          console.log(username);
+          $('#id_username').val(username);
+      });
+    });
+
+  </script>
+{% endblock javascript %}
