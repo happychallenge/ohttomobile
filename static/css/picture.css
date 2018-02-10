@@ -28,3 +28,8 @@
   left: 50%;
   transform: translate(-50%, -65%);
 }
+
+.dummy {
+  height: 200px;
+  width: 100%;
+}
