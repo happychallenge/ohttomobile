@@ -5,9 +5,9 @@ from .models import Post, Content, Theme
 
 class PostForm(forms.ModelForm):
     pictures = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
-    is_public = forms.BooleanField(initial=True, label='해당 Posting을 공개하시겠습니까?',
+    is_public = forms.BooleanField(initial=True, label='Do you want the posting to be public?',
             widget=forms.CheckboxInput(attrs={'class': 'js-switch1'}))
-    is_location = forms.BooleanField(initial=True, label='해당 Posting의 위치를 공개하시겠습니까?',
+    is_location = forms.BooleanField(initial=True, label='Do you want to be public of the location of the Posting?',
             widget=forms.CheckboxInput(attrs={'class': 'js-switch2'}))
     text = forms.CharField(label='Short Message', required=False,
             widget=forms.Textarea(attrs={
