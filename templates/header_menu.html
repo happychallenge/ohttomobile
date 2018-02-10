@@ -3,13 +3,15 @@
   <button class="ui button"><h4> OHTTO </h4></button>
   <button class="ui button"></button>
   <button class="ui button"><a href="{% url 'blog:my_bucket_list' %}"><i class="fa fa-diamond fa-lg"></i></a></button>
+{% if user.is_authenticated %}
   <button class="ui button">
     <a class="dropdown-toggle count-info" data-toggle="popover" id="notifications">
         <i class="fa fa-bell fa-lg"></i>
-            <span class="label label-warning noti_count"> <span class="count">0</span></span>
+        <span class="label label-warning noti_count"><span class="count">0</span></span>
     </a>
     <ul class="dropdown-menu dropdown-messages noti-content">
     </ul>
   </button>
   <button class="ui button"><a href="{% url 'user_profile' %}"><strong> {{user.profile.nickname}} </strong></a></button>
+{% endif %}
 </div>
