@@ -59,7 +59,7 @@ function initMap() {
       map.panTo(pos);
 
       markers.push(marker);
-      bounds.extend(marker.position);
+      // bounds.extend(marker.position);
 
     }, function() {
       handleLocationError(true, infoWindow, map.getCenter());
@@ -98,7 +98,7 @@ function initMap() {
       });
 
       markers.push(marker);
-      bounds.extend(marker.position);
+      // bounds.extend(marker.position);
   }
 {% else %}
   if (navigator.geolocation){
