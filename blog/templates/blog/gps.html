@@ -5,12 +5,13 @@ var bounds;
 var myLng, myLat;
 var map_height;
 
-map_height = $(window).height() - 60;
+map_height = $(window).height() - 120;
 $("#map").height(map_height);
+$(".main").height(map_height);
 
 window.addEventListener('resize', function(event) {
   console.log("Window resize");
-  map_height = $(window).height() - 60;
+  map_height = $(window).height() - 120;
   $("#map").height(map_height);
 });
 
@@ -25,6 +26,7 @@ $("#btn_my_location").click(function(evt){
 
 function initMap() {
 
+{% if isMap %}
   map = new google.maps.Map(document.getElementById('map'), {
       zoom: 12,
       center: {lat: 36.44, lng: 120.13}
@@ -33,17 +35,16 @@ function initMap() {
   var infoWindow = new google.maps.InfoWindow({map: map});
   
   bounds = new google.maps.LatLngBounds();
-
   if (navigator.geolocation){
 
     navigator.geolocation.getCurrentPosition(function(position){
-
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
         // console.log(myLat, myLng);
       var tempPos = transform(lat, lng);
       myLat = tempPos[0];
       myLng = tempPos[1];
+      console.log("My lat :", myLat);
 
       var pos = {
         lat: myLat,
@@ -99,12 +100,26 @@ function initMap() {
       markers.push(marker);
       bounds.extend(marker.position);
   }
+{% else %}
+  if (navigator.geolocation){
 
-  // map.fitBounds(bounds)
+    navigator.geolocation.getCurrentPosition(function(position){
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+        // console.log(myLat, myLng);
+      var tempPos = transform(lat, lng);
+      myLat = tempPos[0];
+      myLng = tempPos[1];
+      console.log("My lat :", myLat);
 
-    // Add a marker clusterer to manage the markers.
-    // var markerCluster = new MarkerClusterer(map, markers,
-    //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+{% endif %}
+  
 }
 
 function getCircle(color){
@@ -126,8 +141,44 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                               'Error: Your browser doesn\'t support geolocation.');
 }
 
+function populateInfoWindow(marker, infoWindow) {
+    if(infoWindow.marker != marker){
+        infoWindow.marker = marker;
+        $.ajax({
+          type: 'GET',
+          async: true,
+          data: {'id': marker.id},
+          url: "{% url 'blog:post_detail' %}",
+          dataType: 'html',
+          success: function(data){
+            infoWindow.setContent(data);
+          }
+        });
+        infoWindow.open(map, marker);
+
+        infoWindow.addListener('closeclick',function() {
+            infoWindow.setMap(null);
+        });
+    }
+}
+
 $(document).on('click', '.maptag', function(){
-  url = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
-  window.location.href = url;
+    {% if pos %}
+      window.location.href = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
+    {% else %}
+      window.location.href = $(this).attr('data-url');
+    {% endif %}
+})
+
+$(document).on('click', '#menu_toogle', function(){
+    {% if pos %}
+      window.location.href = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
+    {% else %}
+      window.location.href = $(this).attr('data-url');
+    {% endif %}
+})
+
+$(document).on('click', '.theme', function(){
+  window.location.href = $(this).attr('data-url');
 })
 </script>

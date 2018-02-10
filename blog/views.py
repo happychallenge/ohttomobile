@@ -47,12 +47,12 @@ def post_on_map(request, tag=None):
                     author__profile__in=friend_set, tag_set__tag__iexact=tag) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile', 'theme')[:50]
-        context = {'post_list': post_list, 'tag': tag}
+        context = {'post_list': post_list, 'tag': tag, 'isMap': True}
     else:
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile')[:50]
-        context = {'post_list': post_list,}
+        context = {'post_list': post_list, 'isMap': True}
     return render(request, 'blog/post_on_map.html', context)
 
 
@@ -112,6 +112,7 @@ def position_timeline(request,tag=None):
                 .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
                 .select_related('author__profile')[:50]
         context = {'post_list': post_list, 'pos': True}
+
     return render(request, 'blog/index.html', context)
 
 
@@ -126,16 +127,14 @@ def position_on_map(request,tag=None):
             tag_set__tag__iexact=tag) \
                 .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
                 .select_related('author__profile')[:50]
-        context = {'post_list': post_list, 'tag': tag, 'pos': True}
+        context = {'post_list': post_list, 'tag': tag, 'pos': True, 'isMap': True}
     else:
         post_list = Post.objects.filter(is_public=True, 
             lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3)) \
                 .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
                 .select_related('author__profile')[:50]
-        context = {'post_list': post_list, 'pos': True}
+        context = {'post_list': post_list, 'pos': True, 'isMap': True}
     return render(request, 'blog/post_on_map.html', context)
-
-
 
 @login_required
 def my_bucket_list(request):

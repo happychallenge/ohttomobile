@@ -69,8 +69,8 @@
   </div>
 {% else %}
   <div id="floating-panel">
-    <input type=button value="food" class="maptag" data-url="{% url 'blog:index_tag' 'food' %}"> 
-    <input type=button value="travel" class="maptag" data-url="{% url 'blog:index_tag' 'travel' %}"> 
+    <input type=button value="food" class="maptag" data-url="{% url 'blog:post_on_map_tag' 'food' %}"> 
+    <input type=button value="travel" class="maptag" data-url="{% url 'blog:post_on_map_tag' 'travel' %}"> 
   </div>
 {% endif %}
 
@@ -87,48 +87,6 @@
   {% endif %}
 </script>
 
-<script>
-function populateInfoWindow(marker, infoWindow) {
-    if(infoWindow.marker != marker){
-        infoWindow.marker = marker;
-        $.ajax({
-          type: 'GET',
-          async: true,
-          data: {'id': marker.id},
-          url: "{% url 'blog:post_detail' %}",
-          dataType: 'html',
-          success: function(data){
-            infoWindow.setContent(data);
-          }
-        });
-        infoWindow.open(map, marker);
-
-        infoWindow.addListener('closeclick',function() {
-            infoWindow.setMarker(null);
-        });
-    }
-}
-
-$(document).on('click', '.theme', function(){
-  window.location.href = $(this).attr('data-url');
-})
-
-$(document).on('click', '.maptag', function(){
-    {% if pos %}
-      window.location.href = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
-    {% else %}
-      window.location.href = $(this).attr('data-url');
-    {% endif %}
-})
-
-$(document).on('click', '#menu_toogle', function(){
-    {% if pos %}
-      window.location.href = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
-    {% else %}
-      window.location.href = $(this).attr('data-url');
-    {% endif %}
-})
-</script>
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
 </script>
 <script async defer
