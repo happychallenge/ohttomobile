@@ -2,7 +2,11 @@
 {% load static %}
 
 {% block css %}
-
+<style>
+#map-canvas {
+    height: 500px;
+}
+</style>
 {% endblock css %}
 
 {% block main %}
@@ -87,7 +91,15 @@
 
 
 {% block modal %}
-
+<!-- MODAL FOR THEME ADD & EDIT -->
+<div id="modal-postmap" class="modal hide fade">
+    <div class="modal-body">
+        <div id="map-canvas"></div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn" data-value="0">Cancel</button>
+    </div>
+</div>
 {% endblock modal %}
 
 

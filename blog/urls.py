@@ -17,6 +17,8 @@ urlpatterns = [
     url(r'^bucket_list/$', views.bucket_list, name='bucket_list'),
     url(r'^bucket_on_map/$', views.bucket_on_map, name='bucket_on_map'),
 
+    url(r'^popup_map/$', views.popup_map, name='popup_map'),
+
     url(r'^search_tag/(?P<tag>\w+)/$', views.index, name='tag_list'),
 
     url(r'^search_persons/$', views.search_persons, name='search_persons'),
@@ -28,7 +30,6 @@ urlpatterns = [
     url(r'^bucket/$', views.post_bucket, name='post_bucket'),
 
     url(r'^(?P<id>\d+)/$', views.user_theme_list, name='user_theme_list'),
-
     url(r'^detail/$', views.post_detail, name='post_detail'),
 
 

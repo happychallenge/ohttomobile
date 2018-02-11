@@ -1,19 +1,32 @@
 <script type="text/javascript">
-$(document).on("click", ".btnMapMarker", function(){
+$(".btnMapMarker").click(function(){
+    var post_id = $(this).attr("data-url");
+    $.ajax({
+        url : '/blog/popup_map/', // data-url : /blog/theme_add/
+        type : 'get',
+        data : { 'id': post_id },
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            var center = new google.maps.LatLng(data.lat, data.lng);
+            console.log(center);
 
-    var photo_id = $(this).attr('data-url');
-    animateMarker(photo_id);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: center
+            });
+
+            $('#modal-postmap').modal({
+                backdrop: 'static',
+                keyboard: false
+            }).on('shown.bs.modal', function () {
+                google.maps.event.trigger(map, 'resize');
+                map.setCenter(center);
+            });
+        }
+    });
 });
 
-function animateMarker(photo_id){
-    for (var i = 0; i < markers.length; i++) {
-        if(markers[i].id == photo_id){
-            markers[i].setAnimation(google.maps.Animation.BOUNCE);
-            map.setZoom(15);
-            map.setCenter(markers[i].position);
-        }
-    }
-}
 
 // Like and Cancel
 $(document).on('click', '.like', function(){

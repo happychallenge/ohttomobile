@@ -138,6 +138,12 @@ def position_on_map(request,tag=None):
 
 
 @login_required
+def popup_map(request):
+    # post = Post.objects.get(id=request.GET.get('post_id'))
+    post = get_object_or_404(Post, id=request.GET.get('id'))
+    return JsonResponse({ 'lat': post.lat, 'lng': post.lng })
+
+@login_required
 def bucket_list(request):
     post_list = request.user.profile.get_bucket_list
     context = {'post_list':post_list, 'bucket': True}
@@ -168,7 +174,6 @@ def post_like(request):
     context = {
         'like_count': post.like_count, 'message': message,
     }
-
     return HttpResponse(json.dumps(context), content_type="application/json")
 
 @login_required
@@ -188,7 +193,6 @@ def post_bucket(request):
     context = {
         'bucket_count': post.bucket_count, 'message': message,
     }
-
     return HttpResponse(json.dumps(context), content_type="application/json")
 
 import sys

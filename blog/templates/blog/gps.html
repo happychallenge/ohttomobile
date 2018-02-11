@@ -5,12 +5,12 @@ var bounds;
 var myLng, myLat;
 var map_height;
 
-map_height = $(window).height() - 110;
+map_height = $(window).height() - 105;
 $("#map").height(map_height);
 
 window.addEventListener('resize', function(event) {
   console.log("Window resize");
-  map_height = $(window).height() - 110;
+  map_height = $(window).height() - 105;
   $("#map").height(map_height);
 });
 
@@ -105,6 +105,11 @@ function initMap() {
 {% else %}
   var pos;
   var infoWindow = new google.maps.InfoWindow();
+  map = new google.maps.Map(document.getElementById('map-canvas'), {
+      zoom: 14,
+      center: {lat: 36.44, lng: 120.13}
+  });
+
   if (navigator.geolocation){
 
     navigator.geolocation.getCurrentPosition(function(position){
@@ -127,6 +132,8 @@ function initMap() {
   } else {
     handleLocationError(false, infoWindow, pos);
   }
+
+
 {% endif %}
   
 }
@@ -154,14 +161,14 @@ function populateInfoWindow(marker, infoWindow) {
     if(infoWindow.marker != marker){
         infoWindow.marker = marker;
         $.ajax({
-          type: 'GET',
-          async: true,
-          data: {'id': marker.id},
-          url: "{% url 'blog:post_detail' %}",
-          dataType: 'html',
-          success: function(data){
-            infoWindow.setContent(data);
-          }
+            type: 'GET',
+            async: true,
+            data: {'id': marker.id},
+            url: "{% url 'blog:post_detail' %}",
+            dataType: 'html',
+            success: function(data){
+              infoWindow.setContent(data);
+            }
         });
         infoWindow.open(map, marker);
 
@@ -190,4 +197,5 @@ $(document).on('click', '#menu_toogle', function(){
 $(document).on('click', '.theme', function(){
   window.location.href = $(this).attr('data-url');
 })
+
 </script>
