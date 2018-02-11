@@ -7,7 +7,7 @@
 
 {% block main %}
   <div class="row"> 
-      <div class="col-sm-{% if profile %}6{% else %}4{% endif %} content_list">
+      <div class="col-sm-12 content_list">
           <div id="post-container" class="photo">
             {% if profile %}
               {% include 'account/person_policy.html' with pList=True user=friend %}

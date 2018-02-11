@@ -47,12 +47,12 @@ def post_on_map(request, tag=None):
                     author__profile__in=friend_set, tag_set__tag__iexact=tag) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile', 'theme')[:50]
-        context = {'post_list': post_list, 'tag': tag, 'pos': True}
+        context = {'post_list': post_list, 'tag': tag,}
     else:
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile')[:50]
-        context = {'post_list': post_list, 'pos': True}
+        context = {'post_list': post_list}
     return render(request, 'blog/on_map.html', context)
 
 
@@ -127,13 +127,13 @@ def position_on_map(request,tag=None):
             tag_set__tag__iexact=tag) \
                 .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
                 .select_related('author__profile')[:50]
-        context = {'post_list': post_list, 'tag': tag, 'pos': True, 'pos': True}
+        context = {'post_list': post_list, 'tag': tag, 'pos': True}
     else:
         post_list = Post.objects.filter(is_public=True, 
             lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3)) \
                 .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
                 .select_related('author__profile')[:50]
-        context = {'post_list': post_list, 'pos': True, 'pos': True}
+        context = {'post_list': post_list, 'pos': True}
     return render(request, 'blog/on_map.html', context)
 
 
