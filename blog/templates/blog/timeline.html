@@ -2,43 +2,7 @@
 {% load static %}
 
 {% block css %}
-<style>
-/* Always set the map height explicitly to define the size of the div
- * element that contains the map. */
-.sidebar-map {
-  position: fixed;
-  right: 0;
-}
-.content_list{
-  margin-left: 10px;
-}
-#floating-panel {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  z-index: 5;
-  background-color: #fff;
-  padding: 1px;
-/*  border: 1px solid #999;*/
-  text-align: center;
-  font-family: 'Roboto','sans-serif';
-  line-height: 15px;
-  padding: 3px;
-}
-#floating-menu {
-  position: fixed;
-  top: 60px;
-  right: 20px;
-  z-index: 6;
-  background-color: #fff;
-  padding: 1px;
-/*  border: 1px solid #999;*/
-  text-align: center;
-  font-family: 'Roboto','sans-serif';
-  line-height: 15px;
-  padding: 3px;
-}
-</style>
+
 {% endblock css %}
 
 {% block main %}
@@ -88,6 +52,12 @@
             <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
+    {% elif bucket %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:bucket_on_map' %}">
+            <i class="fa fa-map-marker fa-lg"></i>
+          </button>
+        </div>
     {% else %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:post_on_map' %}">
@@ -96,10 +66,21 @@
         </div>
     {% endif %}
 
+    {% if pos %}
+      <div id="floating-panel">
+        <input type=button value="food" class="maptag" data-url="{% url 'blog:position_timeline_tag' 'food' %}"> 
+        <input type=button value="travel" class="maptag" data-url="{% url 'blog:position_timeline_tag' 'travel' %}"> 
+      </div>
+    {% elif bucket %}
+      
+    {% elif history %}
+
+    {% else %}
       <div id="floating-panel">
         <input type=button value="food" class="maptag" data-url="{% url 'blog:index_tag' 'food' %}"> 
         <input type=button value="travel" class="maptag" data-url="{% url 'blog:index_tag' 'travel' %}"> 
       </div>
+    {% endif %}
       
   </div>
 {% endblock main %}
@@ -119,13 +100,13 @@
 <script src="{% static 'js/plugins/switchery/switchery.js' %}"></script>
 <script>
 {% for theme in friend.profile.get_theme_list %}
-    var elem = document.querySelector('.js-switch1-{{forloop.counter}}');
-    var init = new Switchery(elem, { color: '#ED5565' });
+    var elem{{forloop.counter}} = document.querySelector('.js-switch1-{{forloop.counter}}');
+    var init = new Switchery(elem{{forloop.counter}}, { color: '#ED5565' });
 {% endfor %}
 
 {% for theme in friend.profile.get_invited_theme %}
-    var elem = document.querySelector('.js-switch2-{{forloop.counter}}');
-    var init = new Switchery(elem, { color: '#ED5565' });
+    var elem{{forloop.counter}} = document.querySelector('.js-switch2-{{forloop.counter}}');
+    var init = new Switchery(elem{{forloop.counter}}, { color: '#ED5565' });
 {% endfor %}
 </script>
 {% endif %}

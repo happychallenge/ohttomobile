@@ -7,7 +7,6 @@ var map_height;
 
 map_height = $(window).height() - 120;
 $("#map").height(map_height);
-$(".main").height(map_height);
 
 window.addEventListener('resize', function(event) {
   console.log("Window resize");
@@ -15,8 +14,8 @@ window.addEventListener('resize', function(event) {
   $("#map").height(map_height);
 });
 
-$("#btn_my_location").click(function(evt){
-  evt.preventDefault();
+$("#btn_my_location").click(function(event){
+  event.preventDefault();
   if (typeof myLat != 'undefined'){
     window.location.href = "{% url 'blog:position_on_map' %}?lat=" + myLat + "&lng=" + myLng;
   } else {
@@ -24,19 +23,18 @@ $("#btn_my_location").click(function(evt){
   }
 });
 
-function initMap() {
 
-{% if isMap %}
+function initMap() {
+{% if pos %}
   map = new google.maps.Map(document.getElementById('map'), {
       zoom: 12,
       center: {lat: 36.44, lng: 120.13}
   });
 
   var infoWindow = new google.maps.InfoWindow({map: map});
-  
   bounds = new google.maps.LatLngBounds();
-  if (navigator.geolocation){
 
+  if (navigator.geolocation){
     navigator.geolocation.getCurrentPosition(function(position){
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
@@ -100,7 +98,12 @@ function initMap() {
       markers.push(marker);
       // bounds.extend(marker.position);
   }
+  {% if bucket or history %}
+    map.fitBounds(bounds)
+  {% endif %}
+
 {% else %}
+  var infoWindow = new google.maps.InfoWindow();
   if (navigator.geolocation){
 
     navigator.geolocation.getCurrentPosition(function(position){

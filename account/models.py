@@ -49,6 +49,10 @@ class Profile(models.Model):
     def get_bucket_list(self):
         return [i.post for i in self.user.buckets.all()]
 
+    # @property
+    # def get_bucket_list_tag(self, tag):
+    #     return [i.post for i in self.user.buckets.filter()]
+
     @property
     def bucket_count(self):
         return self.user.buckets.count()

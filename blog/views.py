@@ -35,7 +35,7 @@ def index(request, tag=None):
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile')[:50]
         context = {'post_list': post_list,}
-    return render(request, 'blog/index.html', context)
+    return render(request, 'blog/timeline.html', context)
 
 
 @login_required
@@ -47,13 +47,13 @@ def post_on_map(request, tag=None):
                     author__profile__in=friend_set, tag_set__tag__iexact=tag) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile', 'theme')[:50]
-        context = {'post_list': post_list, 'tag': tag, 'isMap': True}
+        context = {'post_list': post_list, 'tag': tag, 'pos': True}
     else:
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile')[:50]
-        context = {'post_list': post_list, 'isMap': True}
-    return render(request, 'blog/post_on_map.html', context)
+        context = {'post_list': post_list, 'pos': True}
+    return render(request, 'blog/on_map.html', context)
 
 
 def post_detail(request):
@@ -63,7 +63,7 @@ def post_detail(request):
 
 
 @login_required
-def my_history(request):
+def history(request):
     post_list = Post.objects.filter(author=request.user)
     return render(request, 'blog/on_map.html', {'post_list':post_list, 'Mine': True})
 
@@ -74,7 +74,7 @@ def friend_profile(request, username):
     post_list = Post.objects.filter(author=friend, is_public=True) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile', 'theme')[:30]
-    return render(request, 'blog/index.html', {'post_list':post_list, 'friend':friend, 'profile': True})
+    return render(request, 'blog/timeline.html', {'post_list':post_list, 'friend':friend, 'profile': True})
 
 
 def user_theme_list(request, id):
@@ -98,7 +98,7 @@ def user_theme_list(request, id):
 def position_timeline(request,tag=None):
     lat = float(request.GET.get('lat'))
     lng = float(request.GET.get('lng'))
-    print("Lat : ", lat, " Lng : ", lng)
+    print("TimeTable Lat : ", lat, " Lng : ", lng)
     if tag:
         post_list = Post.objects.filter(is_public=True, 
             lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3),
@@ -113,38 +113,43 @@ def position_timeline(request,tag=None):
                 .select_related('author__profile')[:50]
         context = {'post_list': post_list, 'pos': True}
 
-    return render(request, 'blog/index.html', context)
+    return render(request, 'blog/timeline.html', context)
 
 
 @login_required
 def position_on_map(request,tag=None):
     lat = float(request.GET.get('lat'))
     lng = float(request.GET.get('lng'))
-    print("Lat : ", lat, " Lng : ", lng)
+    print("Map Lat : ", lat, " Lng : ", lng)
     if tag:
         post_list = Post.objects.filter(is_public=True, 
             lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3),
             tag_set__tag__iexact=tag) \
                 .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
                 .select_related('author__profile')[:50]
-        context = {'post_list': post_list, 'tag': tag, 'pos': True, 'isMap': True}
+        context = {'post_list': post_list, 'tag': tag, 'pos': True, 'pos': True}
     else:
         post_list = Post.objects.filter(is_public=True, 
             lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3)) \
                 .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
                 .select_related('author__profile')[:50]
-        context = {'post_list': post_list, 'pos': True, 'isMap': True}
-    return render(request, 'blog/post_on_map.html', context)
+        context = {'post_list': post_list, 'pos': True, 'pos': True}
+    return render(request, 'blog/on_map.html', context)
+
 
 @login_required
-def my_bucket_list(request):
+def bucket_list(request):
     post_list = request.user.profile.get_bucket_list
-    return render(request, 'blog/index.html', {'post_list':post_list})
+    context = {'post_list':post_list, 'bucket': True}
+    return render(request, 'blog/timeline.html', context)
+
 
 @login_required
-def my_bucket_on_map(request):
+def bucket_on_map(request):
     post_list = request.user.profile.get_bucket_list
-    return render(request, 'blog/post_on_map.html', {'post_list':post_list})
+    print(post_list)
+    context = {'post_list':post_list, 'bucket': True}
+    return render(request, 'blog/on_map.html', context)
 
 
 @login_required
