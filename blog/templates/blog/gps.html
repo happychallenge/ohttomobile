@@ -103,7 +103,7 @@ function initMap() {
   {% endif %}
 
 {% else %}
-
+  var pos;
   var infoWindow = new google.maps.InfoWindow();
   if (navigator.geolocation){
 
@@ -116,7 +116,7 @@ function initMap() {
       myLng = tempPos[1];
       console.log("My lat :", myLat);
 
-      var pos = {
+      pos = {
         lat: myLat,
         lng: myLng
       };
