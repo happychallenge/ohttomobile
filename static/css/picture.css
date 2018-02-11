@@ -56,8 +56,8 @@
 }
 #floating-menu {
   position: fixed;
-  top: 60px;
-  right: 20px;
+  top: 50px;
+  right: 10px;
   z-index: 6;
   background-color: #fff;
   padding: 1px;
