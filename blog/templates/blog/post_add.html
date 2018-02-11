@@ -42,7 +42,7 @@
                   </div>
                 {% endif %}
                 
-                <input type="submit" id="btn_ok" class="btn btn-primary" value="Confirm" />
+                <input type="button" id="btn_ok" class="btn btn-primary" value="Confirm" />
               </form>
           </div>
           <div class="dummy"></div>
@@ -89,6 +89,15 @@
 
     $('.tagsinput').tagsinput({
         tagClass: 'label label-primary'
+    });
+    $(document).on('click', '#btn_ok', function(){
+        var value = $("#id_theme").val();
+        console.log(value);
+        if( value ) {
+            $("#form-post").submit();
+        } else {
+            alert('Choose the theme.');
+        }
     });
 </script>
 

@@ -2,7 +2,7 @@
   <button class="ui button"><a href="{% url 'blog:index' %}"><i class="fa fa-home fa-lg"></i></a></button>
   <button class="ui button"><h4> OHTTO </h4></button>
   <button class="ui button"></button>
-  <button class="ui button"><a href="{% url 'blog:bucket_list' %}"><i class="fa fa-diamond fa-lg"></i></a></button>
+  <button class="ui button"><a href="{% url 'user_profile' %}">{{user.profile.nickname}}</a></button>
 {% if user.is_authenticated %}
   <button class="ui button">
     <a class="dropdown-toggle count-info" data-toggle="popover" id="notifications">

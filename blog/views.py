@@ -241,8 +241,12 @@ def post_add(request):
                 
 
                 width, height = image.size
-                x = 720
-                y = int((x * height) / width)
+                if width > height :
+                    x = 960
+                    y = int((x * height) / width)
+                else:
+                    y = 960
+                    x = int((y * width) / height)
 
                 # save the resized file to our IO ouput with the correct format and EXIF data ;-)
                 output = BytesIO()
