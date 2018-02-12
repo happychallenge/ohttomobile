@@ -26,6 +26,12 @@
         <i class="fa fa-table fa-lg"></i>
       </button>
     </div>
+{% elif bucket %}
+    <div id="floating-menu">
+      <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:bucket_list' %}">
+        <i class="fa fa-table fa-lg"></i>
+      </button>
+    </div>
 {% else %}
     <div id="floating-menu">
       <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:index' %}">

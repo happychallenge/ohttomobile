@@ -99,6 +99,7 @@ function initMap() {
       bounds.extend(marker.position);
   }
   {% if bucket or history %}
+    console.log("FitBounds function");
     map.fitBounds(bounds)
   {% endif %}
 
@@ -109,7 +110,6 @@ function initMap() {
       zoom: 14,
       center: {lat: 36.44, lng: 120.13}
   });
-  console.log("Google Map : ", map);
   if (navigator.geolocation){
 
     navigator.geolocation.getCurrentPosition(function(position){
@@ -119,7 +119,7 @@ function initMap() {
       var tempPos = transform(lat, lng);
       myLat = tempPos[0];
       myLng = tempPos[1];
-      console.log("My lat :", myLat);
+      console.log("My lat... :", myLat);
 
       pos = {
         lat: myLat,

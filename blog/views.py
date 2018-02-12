@@ -65,7 +65,7 @@ def post_detail(request):
 @login_required
 def history(request):
     post_list = Post.objects.filter(author=request.user)
-    return render(request, 'blog/on_map.html', {'post_list':post_list, 'Mine': True})
+    return render(request, 'blog/on_map.html', {'post_list':post_list, 'history': True, 'Mine': True})
 
 
 def friend_profile(request, username):
@@ -85,14 +85,15 @@ def user_theme_list(request, id):
     else:
         if theme.public == True:
             post_list = Post.objects.filter(theme=theme)
-            context = {'post_list':post_list, 'theme': theme.name}
+            context = {'post_list':post_list, 'theme': theme.name, 'bucket':True}
         else:
             if request.user in theme.get_invitee_all():
                 post_list = Post.objects.filter(theme=theme)
-                context = {'post_list':post_list, 'theme': theme.name}
+                context = {'post_list':post_list, 'theme': theme.name, 'bucket':True}
             else:
                 context = {'message': "You don't have a privilage to access these content"}
     return render(request, 'blog/on_map.html', context)
+
 
 @login_required
 def position_timeline(request,tag=None):
@@ -142,6 +143,7 @@ def popup_map(request):
     # post = Post.objects.get(id=request.GET.get('post_id'))
     post = get_object_or_404(Post, id=request.GET.get('id'))
     return JsonResponse({ 'lat': post.lat, 'lng': post.lng })
+
 
 @login_required
 def bucket_list(request):
