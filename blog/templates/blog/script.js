@@ -9,7 +9,6 @@ $(".btnMapMarker").click(function(){
         success: function(data) {
             console.log(data);
             var center = new google.maps.LatLng(data.lat, data.lng);
-            console.log(center);
 
             var marker = new google.maps.Marker({
                 map: map,
@@ -18,15 +17,13 @@ $(".btnMapMarker").click(function(){
 
             $('#modal-postmap').modal({
                 backdrop: 'static',
-                keyboard: false
-            }).on('shown.bs.modal', function () {
+            }).on('shown.bs.modal', function(){
                 google.maps.event.trigger(map, 'resize');
                 map.setCenter(center);
             });
         }
     });
 });
-
 
 // Like and Cancel
 $(document).on('click', '.like', function(){

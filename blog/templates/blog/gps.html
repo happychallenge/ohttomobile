@@ -57,7 +57,7 @@ function initMap() {
       map.panTo(pos);
 
       markers.push(marker);
-      // bounds.extend(marker.position);
+      bounds.extend(marker.position);
 
     }, function() {
       handleLocationError(true, infoWindow, map.getCenter());
@@ -96,7 +96,7 @@ function initMap() {
       });
 
       markers.push(marker);
-      // bounds.extend(marker.position);
+      bounds.extend(marker.position);
   }
   {% if bucket or history %}
     map.fitBounds(bounds)
@@ -109,7 +109,7 @@ function initMap() {
       zoom: 14,
       center: {lat: 36.44, lng: 120.13}
   });
-
+  console.log("Google Map : ", map);
   if (navigator.geolocation){
 
     navigator.geolocation.getCurrentPosition(function(position){
