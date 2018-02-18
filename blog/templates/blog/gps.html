@@ -27,7 +27,7 @@ $("#btn_my_location").click(function(event){
 function initMap() {
 {% if isMap %}
   map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 12,
+      zoom: 10,
       center: {lat: 36.44, lng: 120.13}
   });
 
@@ -98,8 +98,8 @@ function initMap() {
       markers.push(marker);
       bounds.extend(marker.position);
   }
-  {% if bucket or history %}
-    console.log("FitBounds function");
+  {% if bucket or history or theme %}
+    // console.log("FitBounds function", theme);
     map.fitBounds(bounds)
   {% endif %}
 

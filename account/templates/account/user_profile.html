@@ -3,7 +3,6 @@
 
 {% block css %}
 <link href="{% static 'css/plugins/switchery/switchery.css' %}" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/picture.css' %}"> 
 <style>
 
 </style>
@@ -47,30 +46,28 @@
 
 
 {% block modal %}
-<!-- MODAL TO CROP THE IMAGE -->
+<!-- MODAL TO CROP THE IMAGE 999 -->
 {% include 'account/modal_picturecrop.html' %}
 
-<!-- MODAL FOR THEME ADD & EDIT -->
-<div class="modal fade" id="modal-theme">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-        </div>
-    </div>
+<!-- MODAL FOR THEME ADD & EDIT 888 -->
+<div class="ui modal" id="modal-theme">
+    
 </div>
 
-<!-- MODAL FOR THEME ADD & EDIT -->
+
+
+<!-- MODAL FOR THEME ADD & EDIT INVITE-PERSON -->
 <div class="modal fade" id="modal-inviteperson">
     <div class="modal-dialog">
         <div class="modal-content">
-            
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title"> {% trans "Invite Person to This Theme" %}</h4>
             </div>
-        <form method="post" id="form_inviteperson">
+            
+            <form method="post" id="form_inviteperson">
             {% csrf_token %}
             <div class="modal-body">
                 <div class="row">
@@ -94,7 +91,8 @@
                   <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
                   <button type="submit" class="btn btn-primary">{% trans "Confirm" %}</button>
             </div>
-        </form>
+            </form>
+
         </div>
     </div>
 </div>

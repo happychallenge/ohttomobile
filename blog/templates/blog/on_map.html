@@ -2,7 +2,20 @@
 {% load static %}
 
 {% block css %}
-
+<style>
+#floating-theme {
+  position: absolute;
+  bottom: 70px;
+  left: 10px;
+  z-index: 5;
+  background-color: #fff;
+  padding: 1px;
+  text-align: center;
+  font-family: 'Roboto','sans-serif';
+  line-height: 15px;
+  padding: 3px;
+}
+</style>
 {% endblock css %}
 
 {% block main %}
@@ -32,6 +45,12 @@
         <i class="fa fa-table fa-lg"></i>
       </button>
     </div>
+{% elif theme %}
+    <div id="floating-menu">
+      <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:user_theme_list' theme.id %}">
+        <i class="fa fa-table fa-lg"></i>
+      </button>
+    </div>
 {% else %}
     <div id="floating-menu">
       <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:index' %}">
@@ -51,6 +70,19 @@
     <input type=button value="food" class="maptag" data-url="{% url 'blog:post_on_map_tag' 'food' %}"> 
     <input type=button value="travel" class="maptag" data-url="{% url 'blog:post_on_map_tag' 'travel' %}"> 
   </div>
+{% endif %}
+
+{# Theme : Current or All #}
+{% if ownerTheme %}
+  <div id="floating-theme">
+  {% for theme in user.profile.get_theme_list %}
+    <input type=button value="{{theme.name}}" class="theme" data-url="{% url 'blog:user_theme_list' theme.id %}"> 
+  {% endfor %}
+  </div> 
+{% elif otherTheme %}
+  <div id="floating-theme">
+    <input type=button value="{{theme}}" class="theme" data-url="#"> 
+  </div> 
 {% endif %}
 
 <div id="map">

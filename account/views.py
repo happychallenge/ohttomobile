@@ -41,7 +41,9 @@ def signup(request):
                 auth.login(request, user)
             
                 Relation.objects.create(from_user=user.profile, to_user=user.profile, status='F')
-                Theme.objects.create(name='General Life', author=user, public=True)
+                theme=Theme.objects.create(name='General Life', author=user, public=True)
+                obj, created = Invitee.objects.get_or_create(user=user, theme=theme)
+
             
             # current_site = get_current_site(request)
             # message = render_to_string('account/active_email.html', {

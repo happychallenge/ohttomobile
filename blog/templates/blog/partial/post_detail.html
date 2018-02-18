@@ -8,7 +8,7 @@
             <strong> {{ post.author.profile.nickname }}</strong> 
         </a>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="{% url 'blog:user_theme_list' post.theme.id %}"> 
+        <a href="{% url 'blog:user_theme_onmap' post.theme.id %}"> 
             <small>({{post.theme}})</small>
         </a>
     </div>

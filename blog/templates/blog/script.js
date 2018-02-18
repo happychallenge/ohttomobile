@@ -15,9 +15,7 @@ $(".btnMapMarker").click(function(){
                 position: center
             });
 
-            $('#modal-postmap').modal({
-                backdrop: 'static',
-            }).on('shown.bs.modal', function(){
+            $('#modal-postmap').on('shown.bs.modal', function(){
                 google.maps.event.trigger(map, 'resize');
                 map.setCenter(center);
             });

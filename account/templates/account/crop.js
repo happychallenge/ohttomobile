@@ -66,7 +66,7 @@ var loadForm = function(){
             $('#modal-theme').modal('show');
         },
         success: function(data) {
-            $('#modal-theme .modal-content').html(data.html_form)
+            $('#modal-theme').html(data.html_form)
         }
     });
 }
@@ -84,7 +84,7 @@ var saveForm = function(){
                 console.log("Success");
                 $('#modal-theme').modal('hide');
             } else {
-                $('#modal-theme .modal-content').html(data.html_form);
+                $('#modal-theme').html(data.html_form);
             }
         },
         complete: function(data){

@@ -7,10 +7,6 @@ from PIL import Image
 from clarifai.rest import ClarifaiApp
 from .getGPS import get_lat_lon_dt
 
-app = ClarifaiApp(api_key='b207516379df44bfbcd5ba1c32514b41')
-model = app.models.get('general-v1.3')
-forbidden = ['backlit', 'light', 'no person', 'silhouette', 'sky']
-
 # Create your models here.
 class Tag(models.Model):
     tag = models.CharField(max_length=50)
@@ -145,64 +141,6 @@ class Bucket(models.Model):
         unique_together = (
             ('user', 'post')
         )
-
-from os import listdir
-from os.path import isfile, join
-def file_upload():
-
-    user = get_user_model().objects.get(username='njyoon@naver.com')
-    theme = Theme.objects.get(id=6)
-
-    db_path = 'contents/2017/cc'
-    mypath = '/Users/happy/Django/ohtto/media/contents/2017/kimchi'
-    for file in listdir(mypath):
-        if isfile(join(mypath, file)):
-            fullpath = join(mypath,file)
-            db_save_path = join(db_path, file)
-
-            if fullpath != '/Users/happy/Django/ohtto/media/contents/2017/kimchi/.DS_Store':
-                
-                post = Post()
-                post.author = user
-                post.theme = theme
-
-                post.save()
-
-                content = Content()
-                image = Image.open(fullpath)
-                lat, lng, dt = get_lat_lon_dt(image)
-
-                if lat:
-                    content.lat = lat
-                    content.lng = lng
-                if dt:
-                    dt = parser.parse(dt)
-                    content.taken_dt = dt
-
-                width, height = image.size
-                x = width * 0.5
-                y = height * 0.5
-                image = image.thumbnail((x, y), Image.ANTIALIAS)
-                image.save(fullpath, quality=90)
-
-                content.file = db_save_path
-                content.save()
-                post.contents.add(content)
-
-                response = model.predict_by_filename(fullpath)
-                concepts = response['outputs'][0]['data']['concepts']
-                tag_array = []
-                for concept in concepts:
-                    if concept['value'] > 0.95:
-                        if concept['name'] not in forbidden:
-                            obj, created = Tag.objects.get_or_create(tag=concept['name'])
-                            tag_array.append(obj)
-                content.tag_set.set(tag_array)
-
-                post.tag_set.set(tag_array)
-                post.lat = lat
-                post.lng = lng
-                post.save()
 
 
 
