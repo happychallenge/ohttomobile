@@ -1,5 +1,6 @@
 <script>
 var map;
+var pos;
 var markers = [];
 var bounds;
 var myLng, myLat;
@@ -26,13 +27,6 @@ $("#btn_my_location").click(function(event){
 
 function initMap() {
 {% if isMap %}
-  map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: {lat: 36.44, lng: 120.13}
-  });
-
-  var infoWindow = new google.maps.InfoWindow({map: map});
-  bounds = new google.maps.LatLngBounds();
 
   if (navigator.geolocation){
     navigator.geolocation.getCurrentPosition(function(position){
@@ -44,7 +38,7 @@ function initMap() {
       myLng = tempPos[1];
       console.log("My lat :", myLat);
 
-      var pos = {
+      pos = {
         lat: myLat,
         lng: myLng
       };
@@ -54,7 +48,7 @@ function initMap() {
         map: map
       });
 
-      map.panTo(pos);
+      // map.panTo(pos);
 
       markers.push(marker);
       bounds.extend(marker.position);
@@ -65,6 +59,14 @@ function initMap() {
   } else {
     handleLocationError(false, infoWindow, map.getCenter());
   }
+
+  map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: pos
+  });
+
+  var infoWindow = new google.maps.InfoWindow({map: map});
+  bounds = new google.maps.LatLngBounds();
 
   var locations = [
     {% for post in post_list %}
@@ -98,10 +100,8 @@ function initMap() {
       markers.push(marker);
       bounds.extend(marker.position);
   }
-  {% if bucket or history or theme %}
     // console.log("FitBounds function", theme);
     map.fitBounds(bounds)
-  {% endif %}
 
 {% else %}
   var pos;
@@ -132,7 +132,6 @@ function initMap() {
   } else {
     handleLocationError(false, infoWindow, pos);
   }
-
 
 {% endif %}
   
