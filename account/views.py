@@ -16,7 +16,7 @@ from django.views.decorators.http import require_POST
 from .models import Relation
 from .forms import SignUpForm, ProfileForm, ChangePasswordForm
 from .tokens import account_activation_token
-from blog.models import Theme
+from blog.models import Theme, Invitee
 
 def signup(request):
 
