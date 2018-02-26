@@ -104,12 +104,9 @@ function initMap() {
     map.fitBounds(bounds)
 
 {% else %}
-  var pos;
+
   var infoWindow = new google.maps.InfoWindow();
-  map = new google.maps.Map(document.getElementById('map-canvas'), {
-      zoom: 14,
-      center: {lat: 36.44, lng: 120.13}
-  });
+  
   if (navigator.geolocation){
 
     navigator.geolocation.getCurrentPosition(function(position){
@@ -126,12 +123,24 @@ function initMap() {
         lng: myLng
       };
 
+      var marker = new google.maps.Marker({
+        position: pos,
+        label: 'My',
+        map: map
+      });
+
     }, function() {
       handleLocationError(true, infoWindow, pos);
     });
   } else {
     handleLocationError(false, infoWindow, pos);
   }
+
+  map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: pos
+  });
+
 
 {% endif %}
   
