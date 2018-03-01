@@ -138,6 +138,7 @@ class Bucket(models.Model):
     create_dt = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        ordering = ('-id',)
         unique_together = (
             ('user', 'post')
         )
