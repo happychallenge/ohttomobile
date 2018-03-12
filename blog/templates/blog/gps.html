@@ -65,7 +65,7 @@ function initMap() {
       center: pos
   });
 
-  var infoWindow = new google.maps.InfoWindow({map: map});
+  // var infoWindow = new google.maps.InfoWindow({map: map});
   bounds = new google.maps.LatLngBounds();
 
   var locations = [
@@ -166,6 +166,8 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 function populateInfoWindow(marker, infoWindow) {
+    console.log(marker);
+    
     if(infoWindow.marker != marker){
         infoWindow.marker = marker;
         $.ajax({
@@ -178,6 +180,12 @@ function populateInfoWindow(marker, infoWindow) {
               infoWindow.setContent(data);
             }
         });
+
+        map.setZoom(14);
+        var modifier = 0.01;
+        var temp_lat = marker.position.lat() + modifier;
+        map.panTo(new google.maps.LatLng(temp_lat, marker.position.lng()));
+
         infoWindow.open(map, marker);
 
         infoWindow.addListener('closeclick',function() {
