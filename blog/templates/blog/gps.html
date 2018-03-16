@@ -6,12 +6,12 @@ var bounds;
 var myLng, myLat;
 var map_height;
 
-map_height = $(window).height() - 95;
+map_height = $(window).height() - 90;
 $("#map").height(map_height);
 
 window.addEventListener('resize', function(event) {
   console.log("Window resize");
-  map_height = $(window).height() - 95;
+  map_height = $(window).height() - 90;
   $("#map").height(map_height);
 });
 

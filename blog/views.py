@@ -32,7 +32,6 @@ def index(request, tag=None):
             .select_related('author', 'author__profile', 'theme')[:30]
         context = {'post_list': post_list, 'tag': tag}
     else:
-        print("Print this?")
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
             .prefetch_related('tag_set', 'like_user_set', 'contents', 
                 'comments', 'bucket_user_set') \
