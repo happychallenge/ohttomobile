@@ -6,12 +6,12 @@ var bounds;
 var myLng, myLat;
 var map_height;
 
-map_height = $(window).height() - 105;
+map_height = $(window).height() - 95;
 $("#map").height(map_height);
 
 window.addEventListener('resize', function(event) {
   console.log("Window resize");
-  map_height = $(window).height() - 105;
+  map_height = $(window).height() - 95;
   $("#map").height(map_height);
 });
 
@@ -89,7 +89,7 @@ function initMap() {
           map: map,
           position: position,
           icon: getCircle(color),
-          animation: google.maps.Animation.DROP,
+          // animation: google.maps.Animation.DROP,
           id: id
       });
 
@@ -101,7 +101,7 @@ function initMap() {
       bounds.extend(marker.position);
   }
     // console.log("FitBounds function", theme);
-    map.fitBounds(bounds)
+  map.fitBounds(bounds)
 
 {% else %}
 
@@ -167,6 +167,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 function populateInfoWindow(marker, infoWindow) {
     console.log(marker);
+    console.log(infoWindow);
     
     if(infoWindow.marker != marker){
         infoWindow.marker = marker;

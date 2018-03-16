@@ -15,8 +15,8 @@ from account.models import Profile
 from .getGPS import get_lat_lon_dt
 from .adjust_location import transform
 
-app = ClarifaiApp(api_key='b207516379df44bfbcd5ba1c32514b41')
-model = app.models.get('general-v1.3')
+# app = ClarifaiApp(api_key='b207516379df44bfbcd5ba1c32514b41')
+# model = app.models.get('general-v1.3')
 forbidden = ['backlit', 'light', 'no person', 'silhouette', 'sky']
 
 # Create your views here.
@@ -27,13 +27,16 @@ def index(request, tag=None):
     if tag:
         post_list = Post.objects.filter(is_public=True, 
                     author__profile__in=friend_set, tag_set__tag__iexact=tag) \
-            .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
-            .select_related('author__profile', 'theme')[:50]
+            .prefetch_related('tag_set', 'like_user_set', 'contents', 
+                'comments', 'bucket_user_set') \
+            .select_related('author', 'author__profile', 'theme')[:30]
         context = {'post_list': post_list, 'tag': tag}
     else:
+        print("Print this?")
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
-            .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
-            .select_related('author__profile')[:50]
+            .prefetch_related('tag_set', 'like_user_set', 'contents', 
+                'comments', 'bucket_user_set') \
+            .select_related('theme', 'author__profile')[:30]
         context = {'post_list': post_list,}
     return render(request, 'blog/timeline.html', context)
 
@@ -46,12 +49,12 @@ def post_on_map(request, tag=None):
         post_list = Post.objects.filter(is_public=True, 
                     author__profile__in=friend_set, tag_set__tag__iexact=tag) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
-            .select_related('author__profile', 'theme')[:50]
+            .select_related('author__profile', 'theme')[:30]
         context = {'post_list': post_list, 'tag': tag,}
     else:
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
-            .select_related('author__profile')[:50]
+            .select_related('author__profile')[:30]
         context = {'post_list': post_list}
     return render(request, 'blog/on_map.html', context)
 
@@ -294,19 +297,19 @@ def post_add(request):
 
                 post.contents.add(content)
 
-                response = model.predict_by_filename('.' + content.file.url)
-                concepts = response['outputs'][0]['data']['concepts']
-                tag_array = []
-                for concept in concepts:
-                    if concept['value'] > 0.95:
-                        if concept['name'] not in forbidden:
-                            obj, created = Tag.objects.get_or_create(tag=concept['name'])
-                            tag_array.append(obj)
-                content.tag_set.set(tag_array)
-                tag_total.update(tag_array)
+            #     response = model.predict_by_filename('.' + content.file.url)
+            #     concepts = response['outputs'][0]['data']['concepts']
+            #     tag_array = []
+            #     for concept in concepts:
+            #         if concept['value'] > 0.95:
+            #             if concept['name'] not in forbidden:
+            #                 obj, created = Tag.objects.get_or_create(tag=concept['name'])
+            #                 tag_array.append(obj)
+            #     content.tag_set.set(tag_array)
+            #     tag_total.update(tag_array)
 
-            tag_total = list(tag_total)
-            post.tag_set.set(tag_total)
+            # tag_total = list(tag_total)
+            # post.tag_set.set(tag_total)
             post.lat = mgLat
             post.lng = mgLng
             post.save()

@@ -3,7 +3,7 @@
 <div class="ibox float-e-margins" post-id="{{post.id}}">
     <div class="ibox-title">
         
-        <a href="{% if user == post.author %}{% url 'user_profile' %}{% else %}{% url 'blog:friend_profile' post.author.username %}{% endif %}">
+        <a href="{% if user == post.author %}{% url 'user_profile' %}{% else %}{% url 'blog:friend_profile' post.author.profile.nickname %}{% endif %}">
             <img alt="image" width="30px" class="img-circle" src="{% if post.author.profile.picture %} {{ post.author.profile.picture.url }} {% else %} {% static 'image/nouser.png' %}{% endif %}">
             <strong> {{ post.author.profile.nickname }}</strong> 
         </a>
