@@ -47,7 +47,7 @@ class Profile(models.Model):
 
     @property
     def get_bucket_list(self):
-        return [i.post for i in self.user.buckets.all()]
+        return [i.post for i in self.user.buckets.all().select_related('post')]
 
     # @property
     # def get_bucket_list_tag(self, tag):
@@ -60,12 +60,12 @@ class Profile(models.Model):
     @property
     def get_post_list(self):
         user = self.user
-        return [i.post for i in user.posts.all()]
+        return [i.post for i in user.posts.all().select_related('post')]
 
     @property
     def get_invited_theme(self):
         user = self.user
-        return [i.theme for i in user.invitee_set.all()]
+        return [i.theme for i in user.invitee_set.all().select_related('theme')]
 
     @property
     def post_count(self):

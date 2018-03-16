@@ -1,16 +1,12 @@
 from django.contrib import auth
 from django.contrib.auth import login, update_session_auth_hash, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.models import User
 from django.core.checks import messages
-from django.core.mail import EmailMessage
 from django.http import JsonResponse
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_encode
 from django.shortcuts import redirect, render
-from django.views.decorators.http import require_POST
 
 # Create your views here.
 from .models import Relation
@@ -44,24 +40,13 @@ def signup(request):
                 theme=Theme.objects.create(name='General Life', author=user, public=True)
                 obj, created = Invitee.objects.get_or_create(user=user, theme=theme)
 
-            
-            # current_site = get_current_site(request)
-            # message = render_to_string('account/active_email.html', {
-            #         'user': user, 'domain': current_site.domain,
-            #         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            #         'token': account_activation_token.make_token(user),
-            #     })
-
-            # mail_subject = 'Activate your account of "IRememberYourPast.com".'
-            # email = EmailMessage(mail_subject, message, to=[to_email])
-            # email.send()
-            
             return render(request, 'account/send_email_for_confirm.html', {'email': email})
         else:
             return render(request, 'account/signup.html', {'form':form})
     else:
         form = SignUpForm()
-        return render(request, 'account/signup.html', {'form':form})
+
+    return render(request, 'account/signup.html', {'form':form})
 
 
 def activate(request, uidb64, token):

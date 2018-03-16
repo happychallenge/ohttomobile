@@ -2,7 +2,6 @@ import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, HttpResponse
 from PIL import Image
@@ -15,8 +14,8 @@ from account.models import Profile
 from .getGPS import get_lat_lon_dt
 from .adjust_location import transform
 
-# app = ClarifaiApp(api_key='b207516379df44bfbcd5ba1c32514b41')
-# model = app.models.get('general-v1.3')
+app = ClarifaiApp(api_key='b207516379df44bfbcd5ba1c32514b41')
+model = app.models.get('general-v1.3')
 forbidden = ['backlit', 'light', 'no person', 'silhouette', 'sky']
 
 # Create your views here.
