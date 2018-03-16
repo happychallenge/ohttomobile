@@ -27,15 +27,15 @@ def index(request, tag=None):
     if tag:
         post_list = Post.objects.filter(is_public=True, 
                     author__profile__in=friend_set, tag_set__tag__iexact=tag) \
+            .select_related('theme', 'author__profile') \
             .prefetch_related('tag_set', 'like_user_set', 'contents', 
-                'comments', 'bucket_user_set') \
-            .select_related('author', 'author__profile', 'theme')[:30]
+                'comments', 'bucket_user_set')[:30]
         context = {'post_list': post_list, 'tag': tag}
     else:
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
+            .select_related('theme', 'author__profile') \
             .prefetch_related('tag_set', 'like_user_set', 'contents', 
-                'comments', 'bucket_user_set') \
-            .select_related('theme', 'author__profile')[:30]
+                'comments', 'bucket_user_set')[:30]
         context = {'post_list': post_list,}
     return render(request, 'blog/timeline.html', context)
 
@@ -47,13 +47,11 @@ def post_on_map(request, tag=None):
     if tag:
         post_list = Post.objects.filter(is_public=True, 
                     author__profile__in=friend_set, tag_set__tag__iexact=tag) \
-            .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
-            .select_related('author__profile', 'theme')[:30]
+            .prefetch_related('tag_set')[:30]
         context = {'post_list': post_list, 'tag': tag,}
     else:
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
-            .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
-            .select_related('author__profile')[:30]
+            .prefetch_related('tag_set')[:30]
         context = {'post_list': post_list}
     return render(request, 'blog/on_map.html', context)
 

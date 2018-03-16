@@ -30,7 +30,7 @@ class Theme(models.Model):
     create_dt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "{}'s {}".format(self.author.first_name, self.name)
+        return self.name
 
     @property
     def post_count(self):
@@ -93,8 +93,6 @@ class Post(models.Model):
     class Meta:
         ordering = ('-id',)
 
-    def __str__(self):
-        return "{} - {}".format(self.id, self.text)
 
     @property
     def like_count(self):
