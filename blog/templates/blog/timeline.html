@@ -156,14 +156,25 @@
 
 {% block modal %}
 <!-- MODAL FOR THEME ADD & EDIT -->
-<div id="modal-postmap" class="modal hide fade">
-    <div class="modal-body">
-        <div id="map-canvas"></div>
+<div class="ui modal" id="modal-postmap">
+    <i class="close icon"></i>
+    <div class="header">
+        Location
     </div>
-    <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn" data-value="0">Cancel</button>
+    <div class="image content">
+      <div id="map"></div>
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            Nope
+        </div>
+        <div class="ui positive right labeled icon button">
+            YES
+            <i class="checkmark icon"></i>
+        </div>
     </div>
 </div>
+
 {% endblock modal %}
 
 

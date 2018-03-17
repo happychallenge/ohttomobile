@@ -124,7 +124,6 @@ $("#modal-theme").on('click', '#person_results div.child', function(){
     var person_id = dataurl.split(':')[0];
     var person_name = dataurl.split(':')[1];
 
-    $("#id_person").val("").focus();
     $('<input>').attr({
         type: 'text',
         value: person_name
@@ -138,6 +137,7 @@ $("#modal-theme").on('click', '#person_results div.child', function(){
     }).appendTo('#persons_id');
 
     $("#person_results").hide();
+    $("#id_person").val("").focus();
 });
 
 $('#id_nickname').bind('input', function() { 

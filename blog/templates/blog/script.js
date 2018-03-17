@@ -2,8 +2,7 @@
 $(".btnMapMarker").click(function(){
     var post_id = $(this).attr("data-url");
     $.ajax({
-        url : '/blog/popup_map/', // data-url : /blog/theme_add/
-        type : 'get',
+        url : "{% url 'blog:popup_map' %}", 
         data : { 'id': post_id },
         dataType: 'json',
         success: function(data) {
@@ -12,13 +11,13 @@ $(".btnMapMarker").click(function(){
 
             var marker = new google.maps.Marker({
                 map: map,
+                // zoom: 18,
                 position: center
             });
-
-            $('#modal-postmap').on('shown.bs.modal', function(){
-                google.maps.event.trigger(map, 'resize');
-                map.setCenter(center);
-            });
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(center);
+            map.setZoom(14);
+            $('#modal-postmap').fadeIn('fast');
         }
     });
 });
