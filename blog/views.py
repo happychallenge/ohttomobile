@@ -40,7 +40,7 @@ def index(request, tag=None):
 
 
 @login_required
-def post_on_map(request, tag=None):
+def onmap(request, tag=None):
     friend_set = request.user.profile.get_following
 
     if tag:
@@ -52,69 +52,7 @@ def post_on_map(request, tag=None):
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
             .prefetch_related('tag_set')[:30]
         context = {'post_list': post_list}
-    return render(request, 'blog/on_map.html', context)
-
-
-def post_detail(request):
-    id = request.GET.get('id')
-    post = get_object_or_404(Post, id=id)
-    return render(request, 'blog/partial/post_detail.html', {'post': post})
-
-
-@login_required
-def history(request):
-    post_list = Post.objects.filter(author=request.user)
-    return render(request, 'blog/on_map.html', {'post_list':post_list, 'history': True, 'Mine': True})
-
-
-def friend_profile(request, username):
-    friend = get_user_model().objects.get(username=username)
-
-    post_list = Post.objects.filter(author=friend, is_public=True) \
-            .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
-            .select_related('author__profile', 'theme')[:30]
-    return render(request, 'blog/timeline.html', {'post_list':post_list, 'friend':friend, 'profile': True})
-
-
-def user_theme_list(request, id):
-    theme = get_object_or_404(Theme, id=id)
-    if request.user == theme.author:
-        post_list = Post.objects.filter(theme=theme)
-        context = {'post_list':post_list, 'theme': theme, 'ownerTheme': True, }
-    else:
-        if theme.public == True:
-            post_list = Post.objects.filter(theme=theme)
-            context = {'post_list':post_list, 'theme': theme, 'otherTheme':True}
-        else:
-            if request.user in theme.get_invitee_all():
-                post_list = Post.objects.filter(theme=theme)
-                context = {'post_list':post_list, 'theme': theme, 'otherTheme':True}
-            else:
-                context = {'message': "You don't have a privilage to access these content"}
-    return render(request, 'blog/timetable.html', context)
-
-def user_theme_onmap(request, id):
-    theme = get_object_or_404(Theme, id=id)
-    if request.user == theme.author:
-        post_list = Post.objects.filter(theme=theme)
-        context = {'post_list':post_list, 'theme': theme, 'ownerTheme': True, }
-    else:
-        if theme.public == True:
-            post_list = Post.objects.filter(theme=theme)
-            context = {'post_list':post_list, 'theme': theme, 'otherTheme':True}
-        else:
-            if request.user in theme.get_invitee_all():
-                post_list = Post.objects.filter(theme=theme)
-                context = {'post_list':post_list, 'theme': theme, 'otherTheme':True}
-            else:
-                context = {'message': "You don't have a privilage to access these content"}
-    return render(request, 'blog/on_map.html', context)
-
-# def user_theme(request):
-#     if request.user == theme.author:
-#         post_list = Post.objects.filter(theme=theme)
-#         context = {'post_list':post_list, 'theme': theme.name, 'ownerTheme': True, }
-#     return render(request, 'blog/on_map.html', context)
+    return render(request, 'blog/onmap.html', context)
 
 
 @login_required
@@ -140,10 +78,9 @@ def position_timeline(request,tag=None):
 
 
 @login_required
-def position_on_map(request,tag=None):
+def position_onmap(request,tag=None):
     lat = float(request.GET.get('lat'))
     lng = float(request.GET.get('lng'))
-    print("Map Lat : ", lat, " Lng : ", lng)
     if tag:
         post_list = Post.objects.filter(is_public=True, 
             lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3),
@@ -157,7 +94,142 @@ def position_on_map(request,tag=None):
                 .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
                 .select_related('author__profile')[:50]
         context = {'post_list': post_list, 'pos': True}
-    return render(request, 'blog/on_map.html', context)
+    return render(request, 'blog/onmap.html', context)
+
+
+@login_required
+def theme_timeline(request, id, tag=None):
+    theme = get_object_or_404(Theme, id=id)
+    if request.user == theme.author:
+        post_list = select_theme(theme, tag)
+    else:
+        if theme.public == True:
+            post_list = select_theme(theme, tag)
+        else:
+            if request.user in theme.get_invitee_all():
+                post_list = select_theme(theme, tag)
+            else:
+                context = {'message': "You don't have a privilage to access these content"}
+    
+    context = {'post_list':post_list, 'theme': theme }
+    return render(request, 'blog/timeline.html', context)
+
+
+def select_theme(theme, tag):
+    if tag:
+        return Post.objects.filter(theme=theme, tag_set__tag__iexact=tag) \
+                .select_related('theme', 'author__profile') \
+                .prefetch_related('tag_set', 'like_user_set', 'contents', 
+                'comments', 'bucket_user_set')
+    else:
+        return Post.objects.filter(theme=theme) \
+                .select_related('theme', 'author__profile') \
+                .prefetch_related('tag_set', 'like_user_set', 'contents', 
+                'comments', 'bucket_user_set')
+
+@login_required
+def theme_onmap(request, id, tag=None):
+    theme = get_object_or_404(Theme, id=id)
+    if request.user == theme.author:
+        post_list = select_theme(theme, tag)
+    else:
+        if theme.public == True:
+            post_list = select_theme(theme, tag)
+        else:
+            if request.user in theme.get_invitee_all():
+                post_list = select_theme(theme, tag)
+            else:
+                context = {'message': "You don't have a privilage to access these content"}
+    context = {'post_list':post_list, 'theme': theme }
+    return render(request, 'blog/onmap.html', context)
+
+
+@login_required
+def bucket_timeline(request, tag=None):
+    post_list = select_bucket(request, tag)
+    # post_list = request.user.profile.get_bucket_list
+    context = {'post_list':post_list, 'bucket': True, 'tag':tag}
+    return render(request, 'blog/timeline.html', context)
+
+def select_bucket(request, tag):
+    user = request.user
+    if tag:
+        bucket_list = user.buckets.all()
+        post_ids = [ i.post.id for i in bucket_list ]
+        return  Post.objects.filter(id__in = post_ids, tag_set__tag__iexact=tag) \
+                .select_related('author', 'author__profile', 'theme') \
+                .prefetch_related('tag_set', 'like_user_set', 'contents', 
+                'comments', 'bucket_user_set')
+    else:
+        bucket_list = user.buckets.all()
+        post_ids = [ i.post.id for i in bucket_list ]
+        return  Post.objects.filter(id__in = post_ids) \
+                .select_related('author', 'author__profile', 'theme') \
+                .prefetch_related('tag_set', 'like_user_set', 'contents', 
+                'comments', 'bucket_user_set')
+
+
+@login_required
+def bucket_onmap(request, tag=None):
+    post_list = select_bucket(request, tag)
+    # post_list = request.user.profile.get_bucket_list
+    context = {'post_list':post_list, 'bucket': True, 'tag':tag}
+    return render(request, 'blog/onmap.html', context)
+
+
+def post_detail(request):
+    id = request.GET.get('id')
+    post = get_object_or_404(Post, id=id)
+    return render(request, 'blog/partial/post_detail.html', {'post': post})
+
+
+@login_required
+def history_timeline(request, tag=None):
+    post_list = select_history(request, tag)
+    return render(request, 'blog/timeline.html', 
+            {'post_list':post_list, 'history': True, 'Mine': True, 'tag':tag})
+
+
+def select_history(request, tag):
+    user = request.user
+    if tag:
+        return  Post.objects.filter(author=user, tag_set__tag__iexact=tag) \
+                .select_related('author', 'author__profile', 'theme') \
+                .prefetch_related('tag_set', 'like_user_set', 'contents', 
+                'comments', 'bucket_user_set')
+    else:
+        return  Post.objects.filter(author=user) \
+                .select_related('author', 'author__profile', 'theme') \
+                .prefetch_related('tag_set', 'like_user_set', 'contents', 
+                'comments', 'bucket_user_set')
+
+
+@login_required
+def history_onmap(request, tag=None):
+    post_list = select_history(request, tag)
+    return render(request, 'blog/onmap.html', 
+            {'post_list':post_list, 'history': True, 'Mine': True, 'tag':tag})
+
+
+
+
+
+def friend_profile(request, username):
+    friend = get_user_model().objects.get(username=username)
+
+    post_list = Post.objects.filter(author=friend, is_public=True) \
+            .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
+            .select_related('author__profile', 'theme')[:30]
+    return render(request, 'blog/timeline.html', {'post_list':post_list, 'friend':friend, 'profile': True})
+
+
+
+# def user_theme(request):
+#     if request.user == theme.author:
+#         post_list = Post.objects.filter(theme=theme)
+#         context = {'post_list':post_list, 'theme': theme.name, 'ownerTheme': True, }
+#     return render(request, 'blog/onmap.html', context)
+
 
 
 @login_required
@@ -167,19 +239,6 @@ def popup_map(request):
     return JsonResponse({ 'lat': post.lat, 'lng': post.lng })
 
 
-@login_required
-def bucket_list(request):
-    post_list = request.user.profile.get_bucket_list
-    context = {'post_list':post_list, 'bucket': True}
-    return render(request, 'blog/timeline.html', context)
-
-
-@login_required
-def bucket_on_map(request):
-    post_list = request.user.profile.get_bucket_list
-    print(post_list)
-    context = {'post_list':post_list, 'bucket': True}
-    return render(request, 'blog/on_map.html', context)
 
 
 @login_required
@@ -306,7 +365,7 @@ def post_add(request):
 
             tag_total = list(tag_total)
             post.tag_set.set(tag_total)
-            
+
             post.lat = mgLat
             post.lng = mgLng
             post.save()

@@ -104,7 +104,6 @@
 <script src="{% static 'js/cropper.min.js' %}"></script>
 <script src="{% static 'js/plugins/switchery/switchery.js' %}"></script>
 {% include 'account/crop.js' %}
-{% include 'account/invite_person.js' %}
 
 <script>
 {% for theme in user.profile.get_theme_list %}
@@ -113,6 +112,7 @@
 {% endfor %}
 
 {% for theme in user.profile.get_invited_theme %}
+    console.log('theme');
     var elem2{{forloop.counter}} = document.querySelector('.js-switch2-{{forloop.counter}}');
     var init2{{forloop.counter}} = new Switchery(elem2{{forloop.counter}}, { color: '#ED5565' });
 {% endfor %}

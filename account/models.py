@@ -47,7 +47,8 @@ class Profile(models.Model):
 
     @property
     def get_bucket_list(self):
-        return [i.post for i in self.user.buckets.all().select_related('post')]
+        return [i.post for i in self.user.buckets.all() 
+            .select_related('post', 'user') ]
 
     # @property
     # def get_bucket_list_tag(self, tag):

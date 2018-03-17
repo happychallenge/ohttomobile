@@ -18,7 +18,7 @@ window.addEventListener('resize', function(event) {
 $("#btn_my_location").click(function(event){
   event.preventDefault();
   if (typeof myLat != 'undefined'){
-    window.location.href = "{% url 'blog:position_on_map' %}?lat=" + myLat + "&lng=" + myLng;
+    window.location.href = "{% url 'blog:position_onmap' %}?lat=" + myLat + "&lng=" + myLng;
   } else {
     alert("Geolocation is blocked by broswer, please check the broswer setting.")
   }

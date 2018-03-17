@@ -38,52 +38,116 @@
       </div>
 
     {# Toggle Menu Map or TimeTable : Tag & Position #}
-    {% if tag and pos %}
+    {% if pos and tag %}
         <div id="floating-menu">
-          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:position_on_map_tag' tag %}">
-            <i class="fa fa-map-marker fa-lg"></i>
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:position_onmap_tag' tag %}">
+            <i class="fa fa-table fa-lg"></i>
           </button>
+        </div>
+      {# Tag : Current or All #}
+        <div id="floating-tag">
+          <input type=button value="food" class="maptag" data-url="{% url 'blog:position_timeline_tag' 'food' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:position_timeline_tag' 'travel' %}"> 
         </div>
     {% elif pos %}
         <div id="floating-menu">
-          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:position_on_map' %}">
-            <i class="fa fa-map-marker fa-lg"></i>
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:position_onmap' %}">
+            <i class="fa fa-table fa-lg"></i>
           </button>
+        </div>
+      {# Tag : Current or All #}
+        <div id="floating-tag">
+          <input type=button value="food" class="maptag" data-url="{% url 'blog:position_onmap_tag' 'food' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:position_onmap_tag' 'travel' %}"> 
+        </div>
+    {% elif theme and tag %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:theme_onmap_tag' theme.id tag %}">
+            <i class="fa fa-table fa-lg"></i>
+          </button>
+        </div>
+      {# Tag : Current or All #}
+        <div id="floating-tag">
+          <input type=button value="food" class="maptag" data-url="{% url 'blog:theme_timeline_tag' theme.id 'food' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:theme_timeline_tag' theme.id 'travel' %}"> 
+        </div>
+    {% elif theme %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:theme_onmap' theme.id %}">
+            <i class="fa fa-table fa-lg"></i>
+          </button>
+        </div>
+      {# Tag : Current or All #}
+        <div id="floating-tag">
+          <input type=button value="food" class="maptag" data-url="{% url 'blog:theme_timeline_tag' theme.id 'food' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:theme_timeline_tag' theme.id 'travel' %}"> 
+        </div>
+    {% elif bucket and tag %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:bucket_onmap_tag' tag %}">
+            <i class="fa fa-table fa-lg"></i>
+          </button>
+        </div>
+      {# Tag : Current or All #}
+        <div id="floating-tag">
+          <input type=button value="food" class="maptag" data-url="{% url 'blog:bucket_timeline_tag' 'food' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:bucket_timeline_tag' 'travel' %}"> 
+        </div>
+    {% elif bucket %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:bucket_onmap' %}">
+            <i class="fa fa-table fa-lg"></i>
+          </button>
+        </div>
+      {# Tag : Current or All #}
+        <div id="floating-tag">
+          <input type=button value="food" class="maptag" data-url="{% url 'blog:bucket_timeline_tag' 'food' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:bucket_timeline_tag' 'travel' %}"> 
+        </div>
+    {% elif history and tag %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:history_onmap_tag' tag %}">
+            <i class="fa fa-table fa-lg"></i>
+          </button>
+        </div>
+      {# Tag : Current or All #}
+        <div id="floating-tag">
+          <input type=button value="food" class="maptag" data-url="{% url 'blog:history_timeline_tag' 'food' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:history_timeline_tag' 'travel' %}"> 
+        </div>
+    {% elif history %}
+        <div id="floating-menu">
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:history_onmap' %}">
+            <i class="fa fa-table fa-lg"></i>
+          </button>
+        </div>
+      {# Tag : Current or All #}
+        <div id="floating-tag">
+          <input type=button value="food" class="maptag" data-url="{% url 'blog:history_timeline_tag' 'food' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:history_timeline_tag' 'travel' %}"> 
         </div>
     {% elif tag %}
         <div id="floating-menu">
-          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:post_on_map_tag' tag %}">
-            <i class="fa fa-map-marker fa-lg"></i>
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:index_tag' tag %}">
+            <i class="fa fa-table fa-lg"></i>
           </button>
         </div>
-    {% elif bucket %}
-        <div id="floating-menu">
-          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:bucket_on_map' %}">
-            <i class="fa fa-map-marker fa-lg"></i>
-          </button>
+      {# Tag : Current or All #}
+        <div id="floating-tag">
+          <input type=button value="food" class="maptag" data-url="{% url 'blog:index_tag' 'food' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:index_tag' 'travel' %}"> 
         </div>
     {% else %}
         <div id="floating-menu">
-          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:post_on_map' %}">
-            <i class="fa fa-map-marker fa-lg"></i>
+          <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:onmap' %}">
+            <i class="fa fa-table fa-lg"></i>
           </button>
         </div>
-    {% endif %}
-
-    {% if pos %}
-      <div id="floating-panel">
-        <input type=button value="food" class="maptag" data-url="{% url 'blog:position_timeline_tag' 'food' %}"> 
-        <input type=button value="travel" class="maptag" data-url="{% url 'blog:position_timeline_tag' 'travel' %}"> 
-      </div>
-    {% elif bucket %}
-      
-    {% elif history %}
-
-    {% else %}
-      <div id="floating-panel">
-        <input type=button value="food" class="maptag" data-url="{% url 'blog:index_tag' 'food' %}"> 
-        <input type=button value="travel" class="maptag" data-url="{% url 'blog:index_tag' 'travel' %}"> 
-      </div>
+      {# Tag : Current or All #}
+        <div id="floating-tag">
+          <input type=button value="food" class="maptag" data-url="{% url 'blog:index_tag' 'food' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:index_tag' 'travel' %}"> 
+        </div>
     {% endif %}
       
   </div>

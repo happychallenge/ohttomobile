@@ -127,13 +127,11 @@ $("#modal-theme").on('click', '#person_results div.child', function(){
     $("#id_person").val("").focus();
     $('<input>').attr({
         type: 'text',
-        id: 'id_person_name',
         value: person_name
     }).appendTo('#persons_name');
 
     $('<input>').attr({
         type: 'checkbox',
-        id: 'id_person_id',
         name: 'persons_id',
         value: person_id,
         checked: 'checked'

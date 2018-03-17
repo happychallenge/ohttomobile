@@ -17,7 +17,7 @@
                 <div class="forum-icon">
                     <i class="fa fa-shield"></i>
                 </div>
-                <a href="{% url 'blog:user_theme_list' theme.id %}" class="forum-item-title"> {{theme.name}} </a> 
+                <a href="{% url 'blog:theme_timeline' theme.id %}" class="forum-item-title"> {{theme.name}} </a> 
             </div>
 
         {% if not profile %}
@@ -67,7 +67,7 @@
                 <div class="forum-icon">
                     <i class="fa fa-shield"></i>
                 </div>
-                <a href="{% url 'blog:user_theme_list' theme.id %}" class="forum-item-title"> ({{theme.author.profile.nickname}})'s {{theme.name}} </a> 
+                <a href="{% url 'blog:theme_timeline' theme.id %}" class="forum-item-title"> ({{theme.author.profile.nickname}})'s {{theme.name}} </a> 
             </div>
             <div class="col-xs-6 col-sm-1 forum-info">
                 <span class="views-number">
