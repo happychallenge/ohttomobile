@@ -17,9 +17,10 @@ $(".btnMapMarker").click(function(){
             google.maps.event.trigger(map, 'resize');
             map.setCenter(center);
             map.setZoom(14);
-            $('#modal-postmap').fadeIn('fast');
+            $('#modal-postmap').modal('show');
         }
     });
+    // $('.ui.modal').modal('refresh');
 });
 
 // Like and Cancel
