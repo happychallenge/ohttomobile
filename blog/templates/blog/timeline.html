@@ -45,7 +45,7 @@
     {% if pos and tag %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:position_onmap_tag' tag %}">
-            <i class="fa fa-table fa-lg"></i>
+            <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
       {# Tag : Current or All #}
@@ -56,7 +56,7 @@
     {% elif pos %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:position_onmap' %}">
-            <i class="fa fa-table fa-lg"></i>
+            <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
       {# Tag : Current or All #}
@@ -67,7 +67,7 @@
     {% elif theme and tag %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:theme_onmap_tag' theme.id tag %}">
-            <i class="fa fa-table fa-lg"></i>
+            <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
       {# Tag : Current or All #}
@@ -78,7 +78,7 @@
     {% elif theme %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:theme_onmap' theme.id %}">
-            <i class="fa fa-table fa-lg"></i>
+            <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
       {# Tag : Current or All #}
@@ -89,7 +89,7 @@
     {% elif bucket and tag %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:bucket_onmap_tag' tag %}">
-            <i class="fa fa-table fa-lg"></i>
+            <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
       {# Tag : Current or All #}
@@ -100,7 +100,7 @@
     {% elif bucket %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:bucket_onmap' %}">
-            <i class="fa fa-table fa-lg"></i>
+            <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
       {# Tag : Current or All #}
@@ -111,7 +111,7 @@
     {% elif history and tag %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:history_onmap_tag' tag %}">
-            <i class="fa fa-table fa-lg"></i>
+            <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
       {# Tag : Current or All #}
@@ -122,7 +122,7 @@
     {% elif history %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:history_onmap' %}">
-            <i class="fa fa-table fa-lg"></i>
+            <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
       {# Tag : Current or All #}
@@ -133,7 +133,7 @@
     {% elif tag %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:index_tag' tag %}">
-            <i class="fa fa-table fa-lg"></i>
+            <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
       {# Tag : Current or All #}
@@ -144,7 +144,7 @@
     {% else %}
         <div id="floating-menu">
           <button class="circular ui icon button" id="menu_toogle" data-url="{% url 'blog:onmap' %}">
-            <i class="fa fa-table fa-lg"></i>
+            <i class="fa fa-map-marker fa-lg"></i>
           </button>
         </div>
       {# Tag : Current or All #}
