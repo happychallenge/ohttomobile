@@ -11,7 +11,6 @@ $(function(){
             }
             reader.readAsDataURL(this.files[0]);
         }
-        
     });
 
     // SCRIPTS TO HANDLE THE CROPPER BOX
@@ -19,28 +18,23 @@ $(function(){
     var cropBoxData;
     var canvasData;
 
-    $('#modalCrop').on('shown.bs.modal', function(){
+    $image.on('load', function(){
         $image.cropper({
             viewMode: 1,
-            aspectRatio: 1/1,
+            aspectRatio: 1 / 1,
             minCropBoxWidth: 200,
             minCropBoxHeight: 200,
-            ready: function(){
+            ready: function() {
                 $image.cropper('setCanvasData', canvasData);
                 $image.cropper('setCropBoxData', cropBoxData);
-            }
+            },
         });
-    }).on('hidden.bs.modal', function(){
+        cropData = $image.cropper('getData');
+        console.log("first : "+cropData);
+    }).on('fadeout', function() {
         cropBoxData = $image.cropper('getCropBoxData');
         canvasData = $image.cropper('getCanvasData');
         $image.cropper('destory');
-    });
-
-    $(".js-zoom-in").click(function(){
-        $image.cropper('zoom', 0.1);
-    })
-    $(".js-zoom-out").click(function(){
-        $image.cropper('zoom', -0.1);
     });
 
     // SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER
@@ -50,7 +44,12 @@ $(function(){
         $('#id_y').val(cropData['y']);
         $('#id_height').val(cropData['height']);
         $('#id_width').val(cropData['width']);
-        $("#formProfile").submit();
+
+        var nickname = $("#id_nickname").val();
+        if (nickname.length >= 2){
+            $("#btn-profile").prop("disabled", true);
+            $("#formProfile").submit();
+        }
     });
 });
 

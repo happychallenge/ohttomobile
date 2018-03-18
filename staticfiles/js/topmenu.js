@@ -55,3 +55,23 @@ $(function(){
     check_notifications();
 
 });
+
+/*sweet checkbox scripts*/
+$('.sweet-check :checkbox:checked').each(function(e,i){
+    $(this).parent().addClass('checked');
+});
+
+
+$(document).on('click', '.sweet-check', function(){
+    if ($(this).hasClass('checked'))
+    {
+        $(this).removeClass('checked');
+        $(this).find('input').prop('checked', false);
+    }
+    else
+    {
+        $(this).addClass('checked');
+        $(this).find('input').prop('checked', true);
+    }
+    // console.log($(this).find('input').prop('checked'));
+});

@@ -30,7 +30,7 @@ class Theme(models.Model):
     create_dt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return "{}'s {}".format(self.author.profile.nickname,self.name)
 
     @property
     def post_count(self):

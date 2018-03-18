@@ -1,6 +1,8 @@
 <script type="text/javascript">
 $(".btnMapMarker").click(function(){
     var post_id = $(this).attr("data-url");
+    map_height = $(window).height() - 200;
+    $("#map").height(map_height);
     $.ajax({
         url : "{% url 'blog:popup_map' %}", 
         data : { 'id': post_id },
@@ -20,7 +22,6 @@ $(".btnMapMarker").click(function(){
             $('#modal-postmap').modal('show');
         }
     });
-    // $('.ui.modal').modal('refresh');
 });
 
 // Like and Cancel

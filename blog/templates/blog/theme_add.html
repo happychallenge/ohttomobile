@@ -13,32 +13,47 @@
         </div>
 
         <div class="field">
+             <div class="ui icon input">
+                <label for=""> {% trans "Do you want this posting to be public?" %} </label>
+                <div class="sweet-check checked" >
+                  <input type="checkbox" name="public" id="id_check" checked>
+                  <div class="outline">
+                    <span></span>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
             <label for=""> {% trans "You invite a person to a theme." %} </label>
              <div class="ui icon input">
                 <input class="prompt" id="id_person" type="text" placeholder="input friend name">
                     <i class="search icon"></i>
             </div>
         </div>
+        
         <div class="field">
             <label>Invited Persons</label>
             <div class="results" id="person_results">
               
             </div>
         </div>
-        <div class="ui two column grid">
-            <div class="row">
-                <div class="column" id="persons_name">
-                    
-                </div>
-                <div class="column" id="persons_id">
-                    
+        <div class="field">
+            <div class="ui two column grid">
+                <div class="row" style="padding: 20px">
+                    <div class="column" id="persons_name">
+                        
+                    </div>
+                    <div class="column" id="persons_id">
+                        
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="ui horizontal divider"></div>
         <div class="actions">
             <button class="ui green button" type="submit">Submit <i class="checkmark icon"></i></button>
         </div>
     </div>
-    
 </form>
 

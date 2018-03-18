@@ -13,6 +13,7 @@ from .models import Relation
 from .forms import SignUpForm, ProfileForm, ChangePasswordForm
 from .tokens import account_activation_token
 from blog.models import Theme, Invitee
+from account.models import Profile
 
 def signup(request):
 
@@ -69,6 +70,7 @@ def activate(request, uidb64, token):
 @login_required
 def user_profile(request):
     profile = request.user.profile
+                # .prefetch_related('')
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():

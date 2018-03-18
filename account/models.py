@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 
@@ -29,7 +30,7 @@ class Profile(models.Model):
 
     @property
     def get_following(self):
-        return [i.to_user for i in self.follow_user.all().select_related('to_user')]
+        return [i.to_user for i in self.follow_user.all()]
 
     @property
     def follower_count(self):
@@ -75,7 +76,8 @@ class Profile(models.Model):
 
     def get_theme_list(self):
         user = self.user
-        return user.themes.all()
+        return user.themes.all().select_related('author', 'author__profile') 
+
 
     def notify_post_liked(self, post):
         if self.user != post.author:

@@ -27,23 +27,22 @@ urlpatterns = [
     url(r'^history_onmap/$', views.history_onmap, name='history_onmap'),
     url(r'^history_onmap/(?P<tag>\w+)/$', views.history_onmap, name='history_onmap_tag'),
 
+    url(r'^add/$', views.post_add, name='post_add'),
+    url(r'^edit/(?P<id>\d+)/$', views.post_edit, name='post_edit'),
+    url(r'^detail/$', views.post_detail, name='post_detail'),
+
+    url(r'^like/$', view_tm.post_like, name='post_like'),
+    url(r'^bucket/$', view_tm.post_bucket, name='post_bucket'),
+
     # url(r'^theme/$', views.user_theme_list, name='user_theme'),
-    url(r'^popup_map/$', views.popup_map, name='popup_map'),
+    url(r'^popup_map/$', view_tm.popup_map, name='popup_map'),
 
     url(r'^search_tag/(?P<tag>\w+)/$', views.index, name='tag_list'),
 
-    url(r'^search_persons/$', views.search_persons, name='search_persons'),
-    url(r'^invite_persons/(?P<theme_id>\d+)/$', views.invite_persons, name='invite_persons'),
+    url(r'^search_persons/$', view_tm.search_persons, name='search_persons'),
+    url(r'^invite_persons/(?P<theme_id>\d+)/$', view_tm.invite_persons, name='invite_persons'),
 
-    url(r'^add/$', views.post_add, name='post_add'),
-    url(r'^edit/(?P<id>\d+)/$', view_tm.post_edit, name='post_edit'),
-    url(r'^like/$', views.post_like, name='post_like'),
-    url(r'^bucket/$', views.post_bucket, name='post_bucket'),
-
-    url(r'^detail/$', views.post_detail, name='post_detail'),
-
-
-    url(r'^friend_profile/(?P<username>[\w@-_\.]+)/$', views.friend_profile, name='friend_profile'),
+    url(r'^friend/(?P<username>[\w@-_\.]+)/$', view_tm.friend_profile, name='friend_profile'),
 
     url(r'^theme_add/$', view_tm.theme_add, name='theme_add'),
 ]
