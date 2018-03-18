@@ -1,16 +1,11 @@
-import json
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
-from django.http import JsonResponse, HttpResponse
 from PIL import Image
 from dateutil import parser
 from clarifai.rest import ClarifaiApp
 
 from .models import Post, Tag, Content, Theme, Bucket, Invitee
 from .forms import PostForm
-from account.models import Profile
 from .getGPS import get_lat_lon_dt
 from .adjust_location import transform
 

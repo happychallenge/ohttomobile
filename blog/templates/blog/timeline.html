@@ -28,7 +28,11 @@
                     </div>
                     <div class="ibox-content">
                         <div class="text-center">
+                          {% if tag %}
+                          <p>You don't have a posting, tag name {{tag}} </p>  
+                          {% else %}
                           <p>You don't have a friend or bucket List</p>
+                          {% endif %}
                         </div>
                     </div>
                 </div>

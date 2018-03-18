@@ -1,8 +1,9 @@
-from django.http import JsonResponse
+import json
+
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect, get_object_or_404, render
 from django.contrib.auth.decorators import login_required
-from decorators import ajax_required
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 
