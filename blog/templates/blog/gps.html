@@ -197,7 +197,11 @@ function populateInfoWindow(marker, infoWindow) {
 
 $(document).on('click', '.maptag', function(){
     {% if pos %}
-      window.location.href = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
+      if (typeof myLat != 'undefined'){
+        window.location.href = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
+      } else {
+          alert("Geolocation is blocked by broswer, please check the broswer setting.")
+      }
     {% else %}
       window.location.href = $(this).attr('data-url');
     {% endif %}
@@ -205,7 +209,11 @@ $(document).on('click', '.maptag', function(){
 
 $(document).on('click', '#menu_toogle', function(){
     {% if pos %}
-      window.location.href = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
+      if (typeof myLat != 'undefined'){
+        window.location.href = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
+      } else {
+          alert("Geolocation is blocked by broswer, please check the broswer setting.")
+      }
     {% else %}
       window.location.href = $(this).attr('data-url');
     {% endif %}
