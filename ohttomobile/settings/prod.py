@@ -35,7 +35,7 @@ RAVEN_CONFIG = {
 }
 
 DATABASES = {
-    'default': dj_database_url.parse('postgres://ohtto:qwer1234!!@localhost:5432/ohtto_db')
+    'default': dj_database_url.parse('postgres://ohtto:Tjdrb00$$@localhost:5432/ohtto_db')
 }
 
 STATIC_URL = '/static/'
